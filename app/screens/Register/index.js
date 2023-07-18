@@ -46,79 +46,84 @@ export default function Register() {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} resizeMode="contain" source={logo} />
-
-      <View style={styles.inputContainer}>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={styles.textInput}
-              placeholder="Email"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="email"
-          defaultValue=""
-        />
-        {errors.email && (
-          <Text style={styles.errorText}>{errors.email.message}</Text>
-        )}
+      <View style={styles.imageContainer}>
+        <Image style={styles.logo} resizeMode="contain" source={logo} />
       </View>
-
-      <View style={styles.inputContainer}>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={styles.textInput}
-              placeholder="Password"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              secureTextEntry
-            />
+      <View style={styles.bottomContainer}>
+        <View style={styles.inputContainer}>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.textInput}
+                placeholder="Email"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="email"
+            defaultValue=""
+          />
+          {errors.email && (
+            <Text style={styles.errorText}>{errors.email.message}</Text>
           )}
-          name="password"
-          defaultValue=""
-        />
-        {errors.password && (
-          <Text style={styles.errorText}>{errors.password.message}</Text>
-        )}
-      </View>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={styles.textInput}
-              placeholder="Confirm Password"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              secureTextEntry
-            />
+        <View style={styles.inputContainer}>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.textInput}
+                placeholder="Password"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry
+              />
+            )}
+            name="password"
+            defaultValue=""
+          />
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password.message}</Text>
           )}
-          name="confirmPassword"
-          defaultValue=""
-        />
-        {errors.confirmPassword && (
-          <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>
-        )}
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.textInput}
+                placeholder="Confirm Password"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry
+              />
+            )}
+            name="confirmPassword"
+            defaultValue=""
+          />
+          {errors.confirmPassword && (
+            <Text style={styles.errorText}>
+              {errors.confirmPassword.message}
+            </Text>
+          )}
+        </View>
+
+        <TouchableOpacity style={styles.btn} onPress={handleSubmit(onSubmit)}>
+          <Text style={styles.btnText}>Signup</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.btn}>
+          <Text style={styles.btnText}>Signup with Google</Text>
+        </TouchableOpacity>
+
+        <StatusBar style="auto" />
       </View>
-
-      <TouchableOpacity style={styles.btn} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.btnText}>Signup</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.btnText}>Signup with Google</Text>
-      </TouchableOpacity>
-
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -159,5 +164,15 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginTop: 5,
+  },
+  imageContainer: {
+    flex: 0.3,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  bottomContainer: {
+    flex: 0.7,
+    width: "100%",
   },
 });
