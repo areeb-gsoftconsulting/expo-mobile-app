@@ -8,7 +8,6 @@ const defaultCartState = {
 const AppReducer = (state, action) => {
   if (action.type == "lang") {
     const lang = action.item;
-    console.log("lang", lang);
     return {
       language: lang,
     };

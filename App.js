@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Link } from "expo-router";
 import NavigationComponent from "./app/navigation";
 import AppContextProvider from "./app/context/contextProvider";
+import "./app/Language/index";
 export default function App() {
   return (
     <>

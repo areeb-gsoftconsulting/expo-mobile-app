@@ -6,7 +6,7 @@ import AppContext from "../../context/appContext";
 export default function Login() {
   const { t, i18n } = useTranslation();
   const { language, setLanguage } = useContext(AppContext);
-
+  console.log("i18n", i18n.language);
   return (
     <View style={styles.container}>
       <Text>
@@ -15,7 +15,7 @@ export default function Login() {
       <Button
         title="login"
         onPress={() => {
-          setLanguage("boy");
+          i18n.changeLanguage(i18n.language == "en" ? "fr" : "en");
         }}
       ></Button>
       <StatusBar style="auto" />
