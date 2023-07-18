@@ -6,19 +6,16 @@ import AppContextProvider from "./app/context/contextProvider";
 import "./app/Language/index";
 export default function App() {
   return (
-    <>
+    <View style={styles.container}>
       <AppContextProvider>
         <NavigationComponent />
       </AppContextProvider>
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
