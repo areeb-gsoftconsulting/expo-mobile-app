@@ -14,6 +14,16 @@ import { useContext } from "react";
 import AppContext from "../../context/appContext";
 import logo from "../../../assets/logo.png";
 import { useForm, Controller } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm password is required"),
+});
 
 export default function Register() {
   const { t, i18n } = useTranslation();
@@ -24,85 +34,90 @@ export default function Register() {
     formState: { errors },
     getValues,
   } = useForm({
+    resolver: yupResolver(validationSchema),
     defaultValues: {
       email: "", // Provide default value for the "Email" field
     },
   });
 
-  const [passwordError, setPasswordError] = useState("");
-
   const onSubmit = (data) => {
-    if (!data.email) {
-      // Check if the email field is empty
-      setPasswordError("Email is required");
-    } else if (!data.password) {
-      // Check if the password field is empty
-      setPasswordError("Password is required");
-    } else if (data.password !== data.confirmPassword) {
-      // Check if passwords match
-      setPasswordError("Passwords must match");
-    } else {
-      setPasswordError("");
-      console.log(data); // Do whatever you want with the form data
-    }
+    console.log("data=>", data);
   };
 
   return (
     <View style={styles.container}>
       <Image style={styles.logo} resizeMode="contain" source={logo} />
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.textInput}
-            placeholder="Email"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
+
+      <View style={styles.inputContainer}>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.textInput}
+              placeholder="Email"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+          name="email"
+          defaultValue=""
+        />
+        {errors.email && (
+          <Text style={styles.errorText}>{errors.email.message}</Text>
         )}
-        name="email"
-        defaultValue=""
-      />
-      {errors.email && <Text>{errors.email.message}</Text>}
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.textInput}
-            placeholder="Password"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            secureTextEntry
-          />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.textInput}
+              placeholder="Password"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              secureTextEntry
+            />
+          )}
+          name="password"
+          defaultValue=""
+        />
+        {errors.password && (
+          <Text style={styles.errorText}>{errors.password.message}</Text>
         )}
-        name="password"
-        defaultValue=""
-      />
-      {errors.password && <Text>{errors.password.message}</Text>}
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.textInput}
-            placeholder="Confirm Password"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            secureTextEntry
-          />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.textInput}
+              placeholder="Confirm Password"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              secureTextEntry
+            />
+          )}
+          name="confirmPassword"
+          defaultValue=""
+        />
+        {errors.confirmPassword && (
+          <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>
         )}
-        name="confirmPassword"
-        defaultValue=""
-      />
-      {passwordError ? <Text>{passwordError}</Text> : null}
+      </View>
+
       <TouchableOpacity style={styles.btn} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.btnText}>Signup</Text>
       </TouchableOpacity>
+
       <TouchableOpacity style={styles.btn}>
         <Text style={styles.btnText}>Signup with Google</Text>
       </TouchableOpacity>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -120,12 +135,15 @@ const styles = StyleSheet.create({
     height: 90,
     width: 90,
   },
+  inputContainer: {
+    width: "100%",
+    marginBottom: 20,
+  },
   textInput: {
     borderRadius: 8,
     borderWidth: 1,
     width: "100%",
     padding: 5,
-    marginTop: 20,
   },
   btn: {
     marginTop: 20,
@@ -137,5 +155,9 @@ const styles = StyleSheet.create({
   btnText: {
     textAlign: "center",
     color: "white",
+  },
+  errorText: {
+    color: "red",
+    marginTop: 5,
   },
 });
