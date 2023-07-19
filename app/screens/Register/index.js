@@ -16,7 +16,8 @@ import logo from "../../../assets/logo.png";
 import { useForm, Controller } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { initializeApp } from "firebase/app";
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
@@ -40,8 +41,20 @@ export default function Register() {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("data=>", data);
+    try {
+      const auth = getAuth();
+
+      let res = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      console.log("res==>", res);
+    } catch (error) {
+      console.log("err", error);
+    }
   };
 
   return (

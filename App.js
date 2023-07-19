@@ -4,6 +4,7 @@ import { Link } from "expo-router";
 import NavigationComponent from "./app/navigation";
 import AppContextProvider from "./app/context/contextProvider";
 import "./app/Language/index";
+import "./firebaseConfig";
 export default function App() {
   return (
     <View style={styles.container}>
