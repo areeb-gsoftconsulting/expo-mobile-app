@@ -58,7 +58,9 @@ export default function Login() {
         data.email,
         data.password
       );
-      console.log("res==>", res);
+      if (res) {
+        navigation.navigate("PromoScreen1");
+      }
     } catch (error) {
       console.log("err", error);
 
