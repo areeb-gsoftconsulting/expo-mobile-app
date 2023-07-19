@@ -7,6 +7,7 @@ import Login from "../screens/Login";
 import ResetPassword from "../screens/ResetPassword";
 import Home from "../screens/Home";
 import PromoScreen1 from "../screens/PromoScreen1";
+import PaymentSelection from "../screens/PaymentSelection";
 
 const Stack = createNativeStackNavigator();
 function NavigationComponent() {
@@ -18,6 +19,7 @@ function NavigationComponent() {
         <Stack.Screen name="ResetPassword" component={ResetPassword} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="PromoScreen1" component={PromoScreen1} />
+        <Stack.Screen name="PaymentSelection" component={PaymentSelection} />
       </Stack.Navigator>
     </NavigationContainer>
   );
