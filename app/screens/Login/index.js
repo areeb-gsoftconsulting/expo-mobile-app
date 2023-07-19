@@ -24,6 +24,9 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import { collection, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import moment from "moment";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -46,6 +49,8 @@ export default function Login() {
       email: "", // Provide default value for the "Email" field
     },
   });
+  const db = getFirestore();
+  const today = moment();
 
   const onSubmit = async (data) => {
     console.log("data=>", data);
@@ -58,7 +63,35 @@ export default function Login() {
         data.password
       );
       if (res) {
-        navigation.navigate("PromoScreen1");
+        const querySnapshot = await getDocs(collection(db, "users"));
+        console.log({ querySnapshot });
+        querySnapshot.forEach((doc) => {
+          console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+          let data = JSON.stringify(doc.data());
+
+          console.log(
+            "data.SubExpDt.isAfter(today)",
+            moment(data.SubExpDt).isAfter(today),
+            "data.SubExpDt == today",
+            moment(data.SubExpDt) == today,
+            "data.SubExpDt.isBefore(today",
+            moment(data.SubExpDt).isBefore(today)
+          );
+
+          if (data.SubExpDt == null) {
+            navigation.navigate("PromoScreen1");
+          } else if (
+            moment(data.SubExpDt).isAfter(today) ||
+            moment(data.SubExpDt) == today
+          ) {
+            //move to prepscreen1
+            console.log("move to prepscreen1");
+          } else if (moment(data.SubExpDt).isBefore(today)) {
+            navigation.navigate("PaymentSelection");
+          }
+        });
+
+        // navigation.navigate("PromoScreen1");
       }
     } catch (error) {
       console.log("err", error);

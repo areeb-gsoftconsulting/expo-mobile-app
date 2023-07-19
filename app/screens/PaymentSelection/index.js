@@ -5,9 +5,15 @@ import { useNavigation } from "@react-navigation/native";
 import { RadioButton } from "react-native-paper";
 import { addDoc, collection } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
-
+import moment from "moment";
 const PaymentSelection = () => {
   const [checked, setChecked] = useState("stripe");
+
+  const today = moment();
+
+  const resultDate = today.add(2, "days");
+
+  const formattedDate = resultDate.format("YYYY-MM-DD");
 
   const auth = getAuth();
   const navigation = useNavigation();
@@ -33,6 +39,7 @@ const PaymentSelection = () => {
           "Privacy Date/Time - The Date/Time that the Privacy Policy was acknowledged (on Registration).",
         TOSDtTm:
           "Terms of Service Date/Time - The time the TOS was approved (on Registration)",
+        SubExpDt: formattedDate,
       });
     } catch (error) {
       console.log("err", error);
