@@ -14,10 +14,20 @@ const PaymentSelection = () => {
       console.log("err", error);
     }
   };
+
+  const pay = async () => {
+    try {
+    } catch (error) {
+      console.log("err", error);
+    }
+  };
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.btnText}>Payment Selection screen</Text>
+      <TouchableOpacity onPress={pay} style={styles.btn}>
+        <Text style={styles.btnText}>Pay</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={logout} style={styles.btn}>
+        <Text style={styles.btnText}>Logout</Text>
       </TouchableOpacity>
     </View>
   );

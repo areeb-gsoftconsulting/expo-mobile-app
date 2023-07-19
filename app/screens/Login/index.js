@@ -24,6 +24,8 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import { addDoc, collection } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -46,7 +48,7 @@ export default function Login() {
       email: "", // Provide default value for the "Email" field
     },
   });
-  console.log("loginErr", loginErr);
+  const db = getFirestore();
 
   const onSubmit = async (data) => {
     console.log("data=>", data);
@@ -60,6 +62,12 @@ export default function Login() {
       );
       if (res) {
         navigation.navigate("PromoScreen1");
+        // const docRef = await addDoc(collection(db, "users"), {
+        //   first: "Alan",
+        //   middle: "Mathison",
+        //   last: "Turing",
+        //   born: 1912,
+        // });
       }
     } catch (error) {
       console.log("err", error);
