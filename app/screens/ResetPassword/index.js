@@ -22,15 +22,16 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   sendEmailVerification,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required"),
+  // password: Yup.string().required("Password is required"),
 });
 
-export default function Login() {
+export default function ResetPassword() {
   const navigation = useNavigation();
   const { t, i18n } = useTranslation();
   const { language, setLanguage } = useContext(AppContext);
@@ -53,11 +54,17 @@ export default function Login() {
     try {
       const auth = getAuth();
 
-      let res = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
+      let res = await sendPasswordResetEmail(auth, data.email, {
+        android: {
+          installApp: false,
+          minimumVersion: "",
+          packageName: "",
+        },
+        handleCodeInApp: true,
+        ios: {
+          bundleId: "",
+        },
+      });
       console.log("res==>", res);
     } catch (error) {
       console.log("err", error);
@@ -103,7 +110,7 @@ export default function Login() {
           )}
         </View>
 
-        <View style={styles.inputContainer}>
+        {/* <View style={styles.inputContainer}>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -122,10 +129,10 @@ export default function Login() {
           {errors.password && (
             <Text style={styles.errorText}>{errors.password.message}</Text>
           )}
-        </View>
+        </View> */}
 
         <TouchableOpacity style={styles.btn} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.btnText}>Sign in</Text>
+          <Text style={styles.btnText}>Reset</Text>
         </TouchableOpacity>
 
         {loginErr.length > 0 && (
@@ -135,14 +142,9 @@ export default function Login() {
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
           <Text>Don't have an account? Signup</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("ResetPassword")}>
-          <Text>Reset Password</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text>back to login</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={signInWithGoogle} style={styles.btn}>
-          <Text style={styles.btnText}>SignIn with Google</Text>
-        </TouchableOpacity>
-
         <StatusBar style="auto" />
       </View>
     </View>

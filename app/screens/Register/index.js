@@ -17,7 +17,9 @@ import { useForm, Controller } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { initializeApp } from "firebase/app";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
@@ -27,6 +29,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Register() {
+  const navigation = useNavigation();
   const { t, i18n } = useTranslation();
   const { language, setLanguage } = useContext(AppContext);
   const {
@@ -54,6 +57,17 @@ export default function Register() {
       console.log("res==>", res);
     } catch (error) {
       console.log("err", error);
+    }
+  };
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth();
+
+  const signInWithGoogle = async () => {
+    try {
+      let res = await signInWithPopup(auth, provider);
+      console.log("res==>", res);
+    } catch (error) {
+      console.log("error==>", error);
     }
   };
 
@@ -131,7 +145,11 @@ export default function Register() {
           <Text style={styles.btnText}>Signup</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text>Login instead?</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={signInWithGoogle} style={styles.btn}>
           <Text style={styles.btnText}>Signup with Google</Text>
         </TouchableOpacity>
 
