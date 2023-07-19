@@ -5,12 +5,15 @@ import NavigationComponent from "./app/navigation";
 import AppContextProvider from "./app/context/contextProvider";
 import "./app/Language/index";
 import "./firebaseConfig";
+import { PaperProvider } from "react-native-paper";
 export default function App() {
   return (
     <View style={styles.container}>
-      <AppContextProvider>
-        <NavigationComponent />
-      </AppContextProvider>
+      <PaperProvider>
+        <AppContextProvider>
+          <NavigationComponent />
+        </AppContextProvider>
+      </PaperProvider>
     </View>
   );
 }

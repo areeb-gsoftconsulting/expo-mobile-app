@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 function NavigationComponent() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Register">
+      <Stack.Navigator initialRouteName="PaymentSelection">
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ResetPassword" component={ResetPassword} />
